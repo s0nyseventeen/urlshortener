@@ -6,9 +6,12 @@ from .models import ShortUrl
 from django.utils import timezone
 
 
-def short_url(request, short_url=None, *args, **kwargs):
-    obj = get_object_or_404(ShortUrl, short_url=short_url)
-    return HttpResponseRedirect(obj.url)
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'makeshort/home.html', {})
+
+    def post(self, request, *args, **kwargs):
+        return render(request, "makeshort/home.html", {})
 
 
 class ShortUrlView(View):
@@ -18,3 +21,13 @@ class ShortUrlView(View):
         if delta.seconds > 3600:
             return HttpResponseNotFound('<h1>Page not found</h1>')
         return HttpResponseRedirect(obj.url)
+
+
+
+
+
+
+
+#def short_url(request, short_url=None, *args, **kwargs):
+#    obj = get_object_or_404(ShortUrl, short_url=short_url)
+#    return HttpResponseRedirect(obj.url)

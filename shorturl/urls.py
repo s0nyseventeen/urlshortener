@@ -14,10 +14,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from makeshort.views import short_url, ShortUrlView
+from makeshort.views import HomeView, ShortUrlView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/a/<str:short_url>/', short_url),
-    path('home/b/<str:short_url>/', ShortUrlView.as_view()),
+    path('', HomeView.as_view()),
+    path('links/<str:short_url>/', ShortUrlView.as_view()),
 ]
