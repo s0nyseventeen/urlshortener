@@ -2,6 +2,14 @@ from django.db import models
 from .utils import create_url
 
 
+#class ShortUrlManager(models.Manager):
+#    def all(self, *args, **kwargs):
+#        qs_main = super().all(*args, **kwargs)
+#        delta = datetime.now(timezone.utc) - date_created
+#        qs = qs_main.filter(date_created=)
+#        return qs
+
+
 class ShortUrl(models.Model):
     url = models.CharField(max_length=255)
     short_url = models.CharField(max_length=6, unique=True, blank=True)
