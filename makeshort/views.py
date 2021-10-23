@@ -1,17 +1,37 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import (HttpResponse, HttpResponseRedirect,
-                         HttpResponseNotFound)
+                         Http404)
 from django.views import View
-from .models import ShortUrl
 from django.utils import timezone
+from .models import ShortUrl
+from .forms import UrlForm
 
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'makeshort/home.html', {})
+        form = UrlForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'makeshort/home.html', context)
 
     def post(self, request, *args, **kwargs):
-        return render(request, "makeshort/home.html", {})
+        form = UrlForm(request.POST)
+        template = 'makeshort/home.html'
+        context = {
+            'form': form,
+        }
+        if form.is_valid():
+            new_url = form.cleaned_data
+            obj, created = ShortUrl.objects.get_or_create(url=new_url)
+            context = {
+                'obj': obj,
+                'created': created,
+            }
+            if created:
+                template = 'makeshort/success.html'
+            template = 'makeshort/exists.html'
+        return render(request, template, context)
 
 
 class ShortUrlView(View):
@@ -19,7 +39,7 @@ class ShortUrlView(View):
         obj = get_object_or_404(ShortUrl, short_url=short_url)
         delta = timezone.now() - obj.date_created
         if delta.seconds > 3600:
-            return HttpResponseNotFound('<h1>Page not found</h1>')
+            raise Http404
         return HttpResponseRedirect(obj.url)
 
 
