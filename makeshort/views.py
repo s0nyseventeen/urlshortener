@@ -30,24 +30,17 @@ class HomeView(View):
             }
             if created:
                 template = 'makeshort/success.html'
-            template = 'makeshort/exists.html'
+            else:
+                template = 'makeshort/exists.html'
         return render(request, template, context)
 
 
 class ShortUrlView(View):
     def get(self, request, short_url=None, *args, **kwargs):
         obj = get_object_or_404(ShortUrl, short_url=short_url)
+        qs = ShortUrl.objects.filter(short_url__iexact=short_url)
         delta = timezone.now() - obj.date_created
-        if delta.seconds > 3600:
-            raise Http404
+        if delta.seconds > 3600:  # !!! check this line tmrw
+            if not qs.exists():
+                raise Http404
         return HttpResponseRedirect(obj.url)
-
-
-
-
-
-
-
-#def short_url(request, short_url=None, *args, **kwargs):
-#    obj = get_object_or_404(ShortUrl, short_url=short_url)
-#    return HttpResponseRedirect(obj.url)

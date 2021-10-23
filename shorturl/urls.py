@@ -19,5 +19,5 @@ from makeshort.views import HomeView, ShortUrlView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomeView.as_view()),
-    path('links/<str:short_url>/', ShortUrlView.as_view()),
+    path('<str:short_url>/', ShortUrlView.as_view()),
 ]
