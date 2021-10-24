@@ -19,11 +19,3 @@ class ShortUrl(models.Model):
         if not self.short_url:  # None or ""
             self.short_url = create_url(self)
         super().save(*args, **kwargs)
-
-
-#class StatisticsURL(models.Model):
-#    url = models.OneToOneField(ShortUrl)
-#    count = models.IntegerField(default=0)
-#
-#    def __str__(self):
-#        return f"{self.count}"

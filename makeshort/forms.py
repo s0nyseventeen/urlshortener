@@ -12,6 +12,6 @@ class UrlForm(forms.Form):
         url_validator = URLValidator()
         try:
             url_validator(url)
-        except:
+        except Exception:
             raise forms.ValidationError("Invalid URL")
         return url
