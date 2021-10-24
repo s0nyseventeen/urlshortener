@@ -40,7 +40,7 @@ class ShortUrlView(View):
         obj = get_object_or_404(ShortUrl, short_url=short_url)
         qs = ShortUrl.objects.filter(short_url__iexact=short_url)
         delta = timezone.now() - obj.date_created
-        if delta.seconds > 3600:  # !!! check this line tmrw
-            if not qs.exists():
+        if delta.seconds > 3600:
+            if not qs.exists() or qs.exists():
                 raise Http404
         return HttpResponseRedirect(obj.url)

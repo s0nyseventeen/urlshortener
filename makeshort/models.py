@@ -8,6 +8,9 @@ class ShortUrl(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)  # when model was created
     updated = models.DateTimeField(auto_now=True)  # changes each time model is updated
     # set_manualy = models.DateTimeField(auto_now=False, auto_now_add=False)
+    
+    class Meta:
+        ordering = ['-date_created']
 
     def __str__(self):
         return self.url
@@ -16,3 +19,11 @@ class ShortUrl(models.Model):
         if not self.short_url:  # None or ""
             self.short_url = create_url(self)
         super().save(*args, **kwargs)
+
+
+#class StatisticsURL(models.Model):
+#    url = models.OneToOneField(ShortUrl)
+#    count = models.IntegerField(default=0)
+#
+#    def __str__(self):
+#        return f"{self.count}"
