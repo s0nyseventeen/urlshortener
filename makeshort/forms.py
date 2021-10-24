@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 
 class UrlForm(forms.Form):
-    url = forms.CharField(label='Full url')
+    url = forms.CharField(label='Full URL')
 
     def clean(self):
         cleaned_data = super().clean()
