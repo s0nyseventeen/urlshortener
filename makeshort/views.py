@@ -42,5 +42,6 @@ class ShortUrlView(View):
         delta = timezone.now() - obj.date_created
         if delta.seconds > 3600:
             if not qs.exists() or qs.exists():
+                qs.delete()
                 raise Http404
         return HttpResponseRedirect(obj.url)

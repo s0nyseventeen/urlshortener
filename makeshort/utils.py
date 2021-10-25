@@ -1,19 +1,22 @@
-import string
-from random import choice
-
-symbols = "".join([string.ascii_lowercase, string.ascii_uppercase,
-                   string.digits])
+import base64
+import hashlib
 
 
-def short_url_gen(length=6, ascii_letters=symbols) -> str:
-    return "".join(choice(ascii_letters) for _ in range(length))  # _ because we don't need it the future
+def short_url_gen(url: str) -> str:
+    myhash = hashlib.sha1(url.encode('utf-8'))
+    result = base64.b64encode(myhash.digest())
+    str_res = str(result[0:6]).replace('b', '').replace("'", '')
+    return str_res
 
 
-def create_url(obj, length=6):
-    new = short_url_gen(length=length)
+def create_url(obj, obj_url: str):
+    new = short_url_gen(obj_url)
     # print(obj)  # https://m.facebook.com/anr.kotov.1?ref=bookmarks
     # print(obj.__class__)  # <class 'makeshort.models.ShortUrl'>
     # print(obj.__class__.__name__)  # ShortUrl
     obj_class = obj.__class__
     check_if_exists = obj_class.objects.filter(short_url=new).exists()
-    return create_url(length=length) if check_if_exists else new
+    if check_if_exists: 
+        return create_url(obj_url) 
+    else:
+        return new

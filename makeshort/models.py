@@ -17,5 +17,5 @@ class ShortUrl(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.short_url:  # None or ""
-            self.short_url = create_url(self)
+            self.short_url = create_url(self, self.url)
         super().save(*args, **kwargs)
